@@ -11,6 +11,7 @@ var path = require('path');
 var multer  = require('multer');
 var done = false;
 var upload = multer({dest: 'uploads/'});
+var fs = require('fs');
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -56,11 +57,12 @@ app.post('/api/photo',function(req,res){
     var newItem = new Item({
       category: req.body.category,
       color:req.body.itemColor,
-      img: req.files.userPhoto.path,
       warmth: req.body.itemWarmth,
       pattern: req.body.itemPattern,
       formality: req.body.itemFormality
     });
+    newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
+    newItem.img.contentType = 'image/png';
     newItem.save(function(){
       console.log('saved item');
     });
@@ -147,7 +149,7 @@ var ItemSchema = new Schema({
  pattern: {type: String, required: true},
  warmth: {type: String},
  formality: {type: String},
- img: { type: String}
+ img: {data: Buffer, contentType: String}
 });
 
 var User = mongoose.model('User',userSchema);
