@@ -11,6 +11,7 @@ var path = require('path');
 var multer  = require('multer');
 var done = false;
 var upload = multer({dest: 'uploads/'});
+var fs = require('fs');
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/../client'));
 
 
-mongoose.connect('mongodb://inthecloset:c0desmith@ds031223.mongolab.com:31223/inthecloset',function(err){
+mongoose.connect('mongodb://clozet:clozet@ds035593.mongolab.com:35593/clozet',function(err){
  if(err) throw err;
  //console.log('connected to DB');
 });
@@ -56,9 +57,10 @@ app.post('/api/photo',function(req,res){
 
     var newItem = new Item({
       category: req.body.category,
-      color:req.body.itemColor,
-      img: req.files.userPhoto.path
+      color:req.body.itemColor
     });
+    newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
+    newItem.img.contentType = 'image/png';
     newItem.save(function(){
       console.log('saved item');
     });
@@ -142,7 +144,7 @@ var ItemSchema = new Schema({
  _itemId : {type: Schema.Types.ObjectId},
  category: {type: String, required: true},
  color: {type: String, required: true},
- img: { type: String}
+ img: {data: Buffer, contentType: String}
 });
 
 var User = mongoose.model('User',userSchema);
