@@ -10,7 +10,7 @@ var Closet = React.createClass({
   componentDidMount: function() {
     var that = this;
     $.get('/closet').done(function(data) {
-    console.log(data);
+    // console.log(data);
       that.setState({closetObj: data});
     });
   },

@@ -177,9 +177,31 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  failureRedirect: '/error'
 }));
 
-// app.post('/search', function(req, res) { *********************************************************
-//   Item.find({searchObj})
-// })
+app.post('/search', function(req, res) {
+
+  searchObj = {};
+  searchObj.category = req.body.category;
+  if (req.body.itemColor) {
+    searchObj.color = {$in: req.body.itemColor.split(', ')};
+  }
+  if (req.body.itemWarmth) {
+    searchObj.warmth = {$in: req.body.itemWarmth.split(', ')};
+  }
+  if (req.body.itemPattern) {
+    searchObj.color = {$in: req.body.itemPattern.split(', ')};
+  }
+  if (req.body.itemFormality) {
+    searchObj.color = {$in: req.body.itemFormality.split(', ')};
+  }
+  Item.find(searchObj, function (err, results) {
+    if (err) {
+      throw err;
+    }
+    else {
+      res.send(results);
+    }
+  })
+})
 //login request
 // app.post('',function(req,res){
 // //  var closet_id = req.body.id;
