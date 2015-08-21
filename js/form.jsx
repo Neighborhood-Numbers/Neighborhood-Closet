@@ -13,11 +13,13 @@ var Form = React.createClass({
 		    			<option value="tops">Top</option>
 				    	<option value="bottoms">Bottom</option>
 				    	<option value="shoes">Shoes</option>
-				    	<option value="accessories">Accessories</option>
-				    	<option value="onesie">Onesie</option>
+				    	<option value="outerwear">Outerwear</option>
     				</select>
 						<div className="form-group">
 		    			<input type="text" placeholder="Color" name="itemColor" id="itemColor" className="form-control" />
+		    			<input type="text" placeholder="Warmth" name="itemWarmth" id="itemWarmth" className="form-control" />
+		    			<input type="text" placeholder="Pattern" name="itemPattern" id="itemPattern" className="form-control" />
+		    			<input type="text" placeholder="Formality" name="itemFormality" id="itemFormality" className="form-control" />
 						</div>
 						<div className="form-group">
 				    	<input type="file" name="userPhoto" />

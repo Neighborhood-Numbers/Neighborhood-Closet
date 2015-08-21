@@ -17,13 +17,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
 
-
 app.use('/', express.static(__dirname + '/../client'));
 
 
 mongoose.connect('mongodb://clozet:clozet@ds035593.mongolab.com:35593/clozet',function(err){
  if(err) throw err;
- //console.log('connected to DB');
+ console.log('connected to DB');
 });
 
 
@@ -57,7 +56,11 @@ app.post('/api/photo',function(req,res){
 
     var newItem = new Item({
       category: req.body.category,
-      color:req.body.itemColor
+      color:req.body.itemColor,
+      warmth: req.body.itemWarmth,
+      pattern: req.body.itemPattern,
+      formality: req.body.itemFormality,
+      img: {}
     });
     newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
     newItem.img.contentType = 'image/png';
@@ -144,12 +147,15 @@ var ItemSchema = new Schema({
  _itemId : {type: Schema.Types.ObjectId},
  category: {type: String, required: true},
  color: {type: String, required: true},
+ pattern: {type: String, required: true},
+ warmth: {type: String},
+ formality: {type: String},
  img: {data: Buffer, contentType: String}
 });
 
 var User = mongoose.model('User',userSchema);
 var Closet = mongoose.model('Closet',closetSchema);
-var Item = mongoose.model('Item',ItemSchema);
+var Item = mongoose.model('Clothes',ItemSchema);
 
 app.get('/api/photo', function(req, res, next) {
  res.sendfile('./client/api/photo');
@@ -172,7 +178,34 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  failureRedirect: '/error'
 }));
 
+app.post('/search', function(req, res) {
 
+  searchObj = {};
+  searchObj.category = req.body.category;
+  if (req.body.itemColor) {
+    searchObj.color = {$in: req.body.itemColor.split(', ')};
+  }
+  if (req.body.itemWarmth) {
+    searchObj.warmth = {$in: req.body.itemWarmth.split(', ')};
+  }
+  if (req.body.itemPattern) {
+    searchObj.color = {$in: req.body.itemPattern.split(', ')};
+  }
+  if (req.body.itemFormality) {
+    searchObj.color = {$in: req.body.itemFormality.split(', ')};
+  }
+  Item.find(searchObj, function (err, results) {
+    if (err) {
+      throw err;
+    }
+    else {
+      console.log(results);
+      console.log(results[0].img);
+      res.contentType(results[0].img.contentType);
+      res.send(results[0].img.data);
+    }
+  })
+})
 //login request
 // app.post('',function(req,res){
 // //  var closet_id = req.body.id;
@@ -223,3 +256,8 @@ function matchClothes(shirt,bottom,shoes,accessories){
 */
 
 app.listen(3000);
+
+
+// 2urfiv8@dispostable.com
+// f75766595b3bf7d
+// 18d8061f95aef64c8845d06d4fc01cd666d9ab49
