@@ -21,16 +21,24 @@ var SearchForm = require('./searchform.jsx');
 	var shoes2 = 'http://www.tactics.com/a/3fu7/9/rainbow-womens-premier-leather-narrow-strap-sandals-dark-brown.jpg';
 	var shoes3 = 'http://www.wearingideas.com/wp-content/uploads/2015/05/Mens-Casual-Shoes-5.jpg';
 
+	var Images = React.createClass({
+		render: function () {
+			return (<div>
+				<img src={this.props.imgs}/>
+				</div>)
+		}
+	});
+
 	var Homepage = React.createClass({
 
-		setInitialState: function () {
+		getInitialState: function () {
 			return {
 				items: []
 			}
 		},
 
 		componentDidMount: function () {
-			
+			this.setState({items: [shirts1, shirts2, shirts3]})
 		},
 
 		updatePage: function (images) {
@@ -38,17 +46,16 @@ var SearchForm = require('./searchform.jsx');
 		},
 
 	  render: function(){
-	  	// var imgs = this.state.items.map(function(element, index) {
-			// return (<Images name={element} key={index} />);
-		// });
+	  	var imgs = this.state.items.map(function(element, index) {
+			return (<Images imgs={element} key={index} />);
+		});
+	  	console.log(imgs)
 	  	return(
 	    <div>
 	    <Form />
 	    <SearchForm update/>
-	      <Slider shelvesArr ={[{img: shirts1},{img: shirts2},{img: shirts3}]}/>
-	      <Slider shelvesArr = {[{img: pants1},{img: pants2},{img: pants3}]}/>
-	      <Slider shelvesArr = {[{img: shoes1},{img: shoes2},{img: shoes3}]}/>
-				
+	      
+				{imgs}
 	    </div>
 
 	  )}
