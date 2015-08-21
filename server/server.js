@@ -59,7 +59,8 @@ app.post('/api/photo',function(req,res){
       color:req.body.itemColor,
       warmth: req.body.itemWarmth,
       pattern: req.body.itemPattern,
-      formality: req.body.itemFormality
+      formality: req.body.itemFormality,
+      img: {}
     });
     newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
     newItem.img.contentType = 'image/png';
@@ -198,7 +199,10 @@ app.post('/search', function(req, res) {
       throw err;
     }
     else {
-      res.send(results);
+      console.log(results);
+      console.log(results[0].img);
+      res.contentType(results[0].img.contentType);
+      res.send(results[0].img.data);
     }
   })
 })
