@@ -22,15 +22,33 @@ var SearchForm = require('./searchform.jsx');
 	var shoes3 = 'http://www.wearingideas.com/wp-content/uploads/2015/05/Mens-Casual-Shoes-5.jpg';
 
 	var Homepage = React.createClass({
+
+		setInitialState: function () {
+			return {
+				items: []
+			}
+		},
+
+		componentDidMount: function () {
+			
+		},
+
+		updatePage: function (images) {
+			this.setState({items: images})
+		},
+
 	  render: function(){
+	  	// var imgs = this.state.items.map(function(element, index) {
+			// return (<Images name={element} key={index} />);
+		// });
 	  	return(
 	    <div>
 	    <Form />
-	    <SearchForm />
+	    <SearchForm update/>
 	      <Slider shelvesArr ={[{img: shirts1},{img: shirts2},{img: shirts3}]}/>
 	      <Slider shelvesArr = {[{img: pants1},{img: pants2},{img: pants3}]}/>
 	      <Slider shelvesArr = {[{img: shoes1},{img: shoes2},{img: shoes3}]}/>
-				<Closet/>
+				
 	    </div>
 
 	  )}

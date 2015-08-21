@@ -4,6 +4,13 @@ var $ = require('jquery');
 
 var SearchForm = React.createClass({
 
+  getInitialState: function () {
+    return {
+      ids: [],
+      images: []
+    }
+  },
+
   render: function() {
     return(
       <div className="row text-center">
