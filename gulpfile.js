@@ -3,6 +3,7 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
+var nodemon = require('gulp-nodemon');
 
 gulp.task('browserify', function() {
     var bundler = browserify({
@@ -34,7 +35,12 @@ gulp.task('browserify', function() {
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./client/'));
 });
-
+gulp.task('start', function () {
+  nodemon({
+    script: 'server/server.js'
+  , ext: 'html js'
+  })
+})
 
 // Just running the two tasks
-gulp.task('default', ['browserify']);
+gulp.task('default', ['browserify', 'start']);
