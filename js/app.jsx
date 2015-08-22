@@ -24,12 +24,11 @@ var SearchForm = require('./searchform.jsx');
 
 	var Images = React.createClass({
 		render: function () {
+			console.log(this.props.imgs.img);
 
-			var source =this.props.imgs.contentType;
-			source += this.props.imgs.data;
 			return (<div className="row">
 				<div className="col-xs-12">
-				<img src={source}/>
+				<img src={this.props.imgs.img}/>
 				</div>
 				</div>)
 		}
@@ -56,7 +55,6 @@ var SearchForm = require('./searchform.jsx');
 	  	var imgs = this.state.items.map(function(element, index) {
 			return (<Images imgs={element} key={index} />);
 		});
-	  	console.log(imgs)
 	  	return(
 	    <div>
 	    <Form />
