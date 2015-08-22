@@ -24,6 +24,8 @@ var SearchForm = React.createClass({
     });
   },
 
+// JSON.stringify({category: {temp1}, itemColor:e.target[1].value, itemPattern: e.target[3].value, itemWarmth: e.target[2].value, itemFormality: e.target[4].value})
+
   handle: function (e) {
     var that = this;
     console.log(e);
@@ -31,31 +33,55 @@ var SearchForm = React.createClass({
     var that = this;
     console.log('update time');
     var temp1 = e.target[0].value;
-    $.post('/search', JSON.stringify({category: {temp1}, itemColor:e.target[1].value, itemPattern: e.target[3].value, itemWarmth: e.target[2].value, itemFormality: e.target[4].value}),
-      function (data) {
-        console.log(temp1)
+    var sendObject = {};
+    sendObject.category = e.target[0].value;
+    sendObject.itemColor = e.target[1].value;
+    sendObject.itemWarmth = e.target[2].value;
+    sendObject.itemPattern = e.target[3].value;
+    sendObject.itemFormality = e.target[4].value;
+    console.log(sendObject);
+    // $.post('/search', sendObject,
+    //   function (data) {
+    //     console.log(temp1)
+    //     console.log(data);
+    //     that.setState({images: [], ids: []} );
+    //     for (var i = 0; i < data.length; i++) {
+    //       that.state.images.push(data[i].img);
+    //       that.state.ids.push(data[i]._id);
+    //     }
+    //     console.log(that.state);
+    //     // that.props.update(that.state.images);
+    //   });
+
+
+    $.ajax({
+      url: '/search',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify(sendObject),
+      success: function(data) {
         console.log(data);
-        console.log('hi');
-        that.setState({images: [], ids: []} );
-        for (var i = 0; i < data.length; i++) {
-          that.state.images.push(data[i].img);
-          that.state.ids.push(data[i]._id);
-        }
-        console.log(that.state);
-        // that.props.update(that.state.images);
-      });
-    // $.ajax({
-    //   url: '/search',
-    //   dataType: 'json',
-    //   type: 'POST',
-    //   data: {category:temp1},
-    //   success: function(data) {
-    //     this.setState({data: data})
-    //   }.bind(this),
-    //   error: function(xhr, status, err) {
-    //     console.error(this.props.url, status, err.toString());
-    //   }.bind(this)
-    // });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+
+
+    // xhr = new XMLHttpRequest();
+
+    // xhr.open('POST',
+    // encodeURI('/search'));
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // xhr.onload = function() {
+    //     if (xhr.status === 200 && xhr.responseText !== newName) {
+    //         alert('Something went wrong.  Name is now ' + xhr.responseText);
+    //     }
+    //     else if (xhr.status !== 200) {
+    //         alert('Request failed.  Returned status of ' + xhr.status);
+    //     }
+    // };
+    // xhr.send(encodeURI('name=' + newName));
 
   },
 

@@ -17,6 +17,34 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
 
+app.post('/search', function(req, res) {
+  console.log('hi');
+  console.log(req.body);
+  searchObj = {};
+  searchObj.category = req.body.category;
+  if (req.body.itemColor) {
+    searchObj.color = {$in: req.body.itemColor.split(', ')};
+  }
+  if (req.body.itemWarmth) {
+    searchObj.warmth = {$in: req.body.itemWarmth.split(', ')};
+  }
+  if (req.body.itemPattern) {
+    searchObj.pattern = {$in: req.body.itemPattern.split(', ')};
+  }
+  if (req.body.itemFormality) {
+    searchObj.formality = {$in: req.body.itemFormality.split(', ')};
+  }
+  Item.find(searchObj, function (err, results) {
+    if (err) {
+      throw err;
+    }
+    else {
+       // console.log(results);
+      res.send(results);
+    }
+  })
+});
+
 app.use('/', express.static(__dirname + '/../client'));
 
 
@@ -74,11 +102,8 @@ app.post('/api/photo',function(req,res){
       }
     });
 
-
-
-    console.log(req.body.category);
-    console.log(req.body.itemColor);
-    console.log(req.files.userPhoto.path);
+    console.log('request');
+    console.log(req)
     res.redirect('/success');
     res.end();
 
@@ -175,34 +200,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  failureRedirect: '/error'
 }));
 
-app.post('/search', function(req, res) {
-  console.log('hi');
-  console.log(req.body.category);
-  searchObj = {};
-  searchObj.category = req.body.category;
-  console.log(req.body);
-  if (req.body.itemColor) {
-    searchObj.color = {$in: req.body.itemColor.split(', ')};
-  }
-  if (req.body.itemWarmth) {
-    searchObj.warmth = {$in: req.body.itemWarmth.split(', ')};
-  }
-  if (req.body.itemPattern) {
-    searchObj.pattern = {$in: req.body.itemPattern.split(', ')};
-  }
-  if (req.body.itemFormality) {
-    searchObj.formality = {$in: req.body.itemFormality.split(', ')};
-  }
-  Item.find(searchObj, function (err, results) {
-    if (err) {
-      throw err;
-    }
-    else {
-      // console.log(results);
-      res.send(results);
-    }
-  })
-})
+
 //login request
 // app.post('',function(req,res){
 // //  var closet_id = req.body.id;
