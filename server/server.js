@@ -106,11 +106,23 @@ app.post('/api/photo',function(req,res){
     console.log(req)
     res.redirect('/success');
     res.end();
-
-
-
     // res.sendFile(path.resolve(__dirname + "/../client/success.html"));
   }
+});
+
+app.post('/api/outfits', function(req,res){
+  var newOutfit = new Outfit({
+    top: req.body._topId,
+    bottom: req.body._topId,
+    shoes: req.body._topId,
+    outerwear: req.body._topId,
+    img: {}
+  })
+  console.log('saved outfit');
+  Outfit.find({}, function(err, outfit){
+    outfits[req.body._itemId].push(newOutfit);
+  })
+  res.sendFile('.client/outfits.html');
 });
 
 
@@ -178,19 +190,28 @@ var ItemSchema = new Schema({
  img: {data: Buffer, contentType: String}
 });
 
+var OutfitSchema = new Schema({
+  _itemId : {type: Schema.Types.ObjectId},
+  top: {type: String, required: true},
+  bottom: {type: String, required: true},
+  shoes: {type: String, required: true},
+  outerwear: {type: String, required: false}
+});
+
 var User = mongoose.model('User',userSchema);
 var Closet = mongoose.model('Closet',closetSchema);
 var Item = mongoose.model('Clothes',ItemSchema);
+var Outfit = mongoose.model('Outfit',OutfitSchema);
 
 app.get('/api/photo', function(req, res, next) {
- res.sendfile('./client/api/photo');
+ res.sendFile('./client/api/photo');
 });
 app.get('/success', function(req, res, next) {
  res.sendfile('./client/Profile.html');
  //console.log('req.body info from /success' + req.body);
 });
 app.get('/error', function(req, res, next) {
- res.sendfile('./client/error.html');
+ res.sendFile('./client/error.html');
 });
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
@@ -200,6 +221,9 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  failureRedirect: '/error'
 }));
 
+app.get('./outfits', function(req,res){
+  res.sendFile('./client/outfits.html');
+})
 
 //login request
 // app.post('',function(req,res){

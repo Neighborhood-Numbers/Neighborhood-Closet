@@ -1,6 +1,7 @@
 var React = require('react');
 var Slider = require('./slider.jsx');
 var Form = require('./form.jsx');
+var Outfit = require('./outfits.jsx');
 var Closet = require('./closet.jsx');
 var SearchForm = require('./searchform.jsx');
 (function() {
@@ -60,12 +61,13 @@ var SearchForm = require('./searchform.jsx');
 	    <div>
 	    <Form />
 	    <SearchForm update={this.updatePage} />
-	      
+	      <Outfit />
 				{imgs}
 	    </div>
 
 	  )}
 	});
+
 	React.render(<Homepage/>, document.getElementById('content'));
 
 })();
