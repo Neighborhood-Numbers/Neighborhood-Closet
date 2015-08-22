@@ -161,10 +161,7 @@ app.get('/api/photo', function(req, res, next) {
  res.sendfile('./client/api/photo');
 });
 app.get('/success', function(req, res, next) {
-  console.log('get request made before serving file');
  res.sendfile('./client/Profile.html');
- console.log('get request made after serving file');
-
  //console.log('req.body info from /success' + req.body);
 });
 app.get('/error', function(req, res, next) {
@@ -179,9 +176,11 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }));
 
 app.post('/search', function(req, res) {
-
+  console.log('hi');
+  console.log(req.body.category);
   searchObj = {};
   searchObj.category = req.body.category;
+  console.log(req.body);
   if (req.body.itemColor) {
     searchObj.color = {$in: req.body.itemColor.split(', ')};
   }
@@ -189,20 +188,18 @@ app.post('/search', function(req, res) {
     searchObj.warmth = {$in: req.body.itemWarmth.split(', ')};
   }
   if (req.body.itemPattern) {
-    searchObj.color = {$in: req.body.itemPattern.split(', ')};
+    searchObj.pattern = {$in: req.body.itemPattern.split(', ')};
   }
   if (req.body.itemFormality) {
-    searchObj.color = {$in: req.body.itemFormality.split(', ')};
+    searchObj.formality = {$in: req.body.itemFormality.split(', ')};
   }
   Item.find(searchObj, function (err, results) {
     if (err) {
       throw err;
     }
     else {
-      console.log(results);
-      console.log(results[0].img);
-      res.contentType(results[0].img.contentType);
-      res.send(results[0].img.data);
+      // console.log(results);
+      res.send(results);
     }
   })
 })

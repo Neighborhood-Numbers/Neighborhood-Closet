@@ -23,8 +23,13 @@ var SearchForm = require('./searchform.jsx');
 
 	var Images = React.createClass({
 		render: function () {
-			return (<div>
-				<img src={this.props.imgs}/>
+
+			var source =this.props.imgs.contentType;
+			source += this.props.imgs.data;
+			return (<div className="row">
+				<div className="col-xs-12">
+				<img src={source}/>
+				</div>
 				</div>)
 		}
 	});
@@ -42,7 +47,8 @@ var SearchForm = require('./searchform.jsx');
 		},
 
 		updatePage: function (images) {
-			this.setState({items: images})
+			this.setState({items: images});
+			console.log(this.state.items);
 		},
 
 	  render: function(){
@@ -53,7 +59,7 @@ var SearchForm = require('./searchform.jsx');
 	  	return(
 	    <div>
 	    <Form />
-	    <SearchForm update/>
+	    <SearchForm update={this.updatePage} />
 	      
 				{imgs}
 	    </div>
