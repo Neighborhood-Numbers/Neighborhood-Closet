@@ -24,7 +24,6 @@ var SearchForm = React.createClass({
     });
   },
 
-// JSON.stringify({category: {temp1}, itemColor:e.target[1].value, itemPattern: e.target[3].value, itemWarmth: e.target[2].value, itemFormality: e.target[4].value})
 
   handle: function (e) {
     var that = this;
@@ -60,29 +59,12 @@ var SearchForm = React.createClass({
       type: 'POST',
       data: JSON.stringify(sendObject),
       success: function(data) {
-        console.log(data);
+        this.props.update(data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-
-
-    // xhr = new XMLHttpRequest();
-
-    // xhr.open('POST',
-    // encodeURI('/search'));
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.onload = function() {
-    //     if (xhr.status === 200 && xhr.responseText !== newName) {
-    //         alert('Something went wrong.  Name is now ' + xhr.responseText);
-    //     }
-    //     else if (xhr.status !== 200) {
-    //         alert('Request failed.  Returned status of ' + xhr.status);
-    //     }
-    // };
-    // xhr.send(encodeURI('name=' + newName));
-
   },
 
   render: function() {
