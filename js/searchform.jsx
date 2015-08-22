@@ -60,6 +60,7 @@ var SearchForm = React.createClass({
       data: JSON.stringify(sendObject),
       success: function(data) {
         this.props.update(data);
+        console.log(data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
