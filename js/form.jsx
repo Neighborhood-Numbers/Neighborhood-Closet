@@ -8,7 +8,7 @@ var Form = React.createClass({
 		return(
 			<div className="row text-center">
 				<div className="col-xs-12 col-sm-12 col-md-10 col-md-offset-2">
-					<form id="uploadForm" encType="multipart/form-data" action="/api/photo" method="post" className="form-inline">
+					<form encType="multipart/form-data" action="/api/photo" method="post" className="form-inline">
     				<select name="category" className="form-control">
 		    			<option value="tops">Top</option>
 				    	<option value="bottoms">Bottom</option>

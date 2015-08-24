@@ -12,7 +12,6 @@ var multer  = require('multer');
 var done = false;
 var upload = multer({dest: 'uploads/'});
 var fs = require('fs');
-var request = require('request');
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -89,10 +88,10 @@ app.post('/api/photo',function(req,res){
       warmth: req.body.itemWarmth,
       pattern: req.body.itemPattern,
       formality: req.body.itemFormality,
-      img: req.files.userPhoto.path
+      img: {}
     });
-    // newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
-    // newItem.img.contentType = 'image/png';
+    newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
+    newItem.img.contentType = 'image/png';
     newItem.save(function(){
       console.log('saved item');
     });
@@ -124,7 +123,9 @@ app.post('/api/outfits', function(req,res){
   Outfit.find({}, function(err, outfit){
     outfits[req.body._itemId].push(newOutfit);
   })
-  res.sendFile('.client/outfits.html');
+  res.send('Outfit saved!');
+  location.reload();
+  res.render('.client/outfits.html');
 });
 
 
